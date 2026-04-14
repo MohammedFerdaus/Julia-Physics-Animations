@@ -70,6 +70,8 @@ Particles bounce around the screen at constant velocity with no physics beyond w
 
 Key Julia concepts: `Observable`, wall collision detection, `clamp`, GLMakie scatter updates.
 
+[![particles_simple](https://github.com/MohammedFerdaus/Julia-Physics-Animations/raw/main/gifs/particles_simple.gif)](/MohammedFerdaus/Julia-Physics-Animations/blob/main/gifs/particles_simple.gif)
+
 ---
 
 ### Particle Movement (Advanced)
