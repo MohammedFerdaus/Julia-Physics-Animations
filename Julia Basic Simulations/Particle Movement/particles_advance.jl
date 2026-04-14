@@ -1,9 +1,8 @@
-#  Particle Movement — Advanced (Gravity + Friction + Collisions)
-#  Particles launch horizontally, fall under gravity, lose
-#  energy on each floor bounce, and collide elastically with
-#  each other (equal mass assumption).
+# Particle Movement (Advanced)
+# Particles launch horizontally, fall under gravity, lose energy on
+# each floor bounce via a friction multiplier, and collide elastically
+# with each other using an equal-mass assumption.
 
-# Add needed packages
 using GLMakie
 using LinearAlgebra
 
@@ -11,29 +10,29 @@ using LinearAlgebra
 const WIDTH = 640
 const HEIGHT = 360
 
-# Particle count
-# Change n to 1, 10, 100, or 1000
+# Particle count (try 1, 10, 100, 1000)
 const particle_count = 10
 
-# Particle radius
+# Particle radius (pixels)
 const RADIUS = 20.0
 
 # Physics constants
-const GRAVITY = 0.2   # pixels / frame^2 downward acceleration
-const FRICTION = 0.9   # horizontal speed multiplier on each floor bounce
+const GRAVITY = 0.2 # downward acceleration (pixels / frame^2)
+const FRICTION = 0.9 # speed multiplier applied on each floor bounce
 
 # Random initial positions
-# Space particles far enough apart so none start overlapping
-px = collect(range(RADIUS * 3, WIDTH - RADIUS * 3, length = particle_count)) .+ rand(-5.0:1.0:5.0, n)
+# Particles are spaced far enough apart so none start overlapping
+px = collect(range(RADIUS * 3, WIDTH - RADIUS * 3, length = particle_count)) .+ rand(-5.0:1.0:5.0, particle_count)
 py = rand((HEIGHT ÷ 2):5.0:(HEIGHT - RADIUS * 2), particle_count)
 
 # Initial velocities
+# Each particle starts with a random horizontal kick, no vertical velocity
 vx = [rand((-5.0, 5.0)) for _ in 1:particle_count]
 vy = zeros(Float64, particle_count)
 
-# Random colors
+# Random colors from palette
 palette = [:red, :green, :blue, :orange, :purple, :cyan,
-               :pink, :yellow, :lime, :teal]
+           :pink, :yellow, :lime, :teal]
 part_colors = [palette[mod1(i, length(palette))] for i in 1:particle_count]
 
 # Observables
@@ -62,10 +61,10 @@ scatter!(ax, pos_x, pos_y,
 
 display(fig)
 
-# Ball-to-ball elastic collision
-# For two equal-mass balls, on contact we swap the velocity
-# components along the collision normal (the line joining
-# their centres).  This conserves both momentum and energy.
+# Ball-to-ball elastic collision resolver
+# For two equal-mass balls in contact, we swap the velocity components
+# along the collision normal (the line joining their centres).
+# This conserves both momentum and kinetic energy.
 function resolve_collisions!(px, py, vx, vy, n, radius)
     for i in 1:n
         for j in i+1:n
@@ -75,28 +74,27 @@ function resolve_collisions!(px, py, vx, vy, n, radius)
             dy = py[j] - py[i]
             dist = sqrt(dx^2 + dy^2)
 
-            # Check overlap
+            # Only process if the balls are overlapping
             if dist < 2 * radius && dist > 0
 
-                # Positional correction
-                # Push the two balls apart so they no longer overlap,
-                # splitting the overlap equally between them.
-                overlap = 2 * radius - dist
-                nx = dx / dist # unit normal x
-                ny = dy / dist # unit normal y
+                # Unit normal along the collision axis
+                nx = dx / dist
+                ny = dy / dist
 
+                # Positional correction: push the balls apart equally
+                # so they no longer overlap before resolving velocities
+                overlap = 2 * radius - dist
                 px[i] -= nx * overlap / 2
                 py[i] -= ny * overlap / 2
                 px[j] += nx * overlap / 2
                 py[j] += ny * overlap / 2
 
                 # Velocity exchange along the normal
-                # Project both velocity vectors onto the collision
-                # normal, swap those projections, leave the
-                # tangential components untouched.
+                # Project both velocity vectors onto the collision normal,
+                # swap those projections, leave tangential components untouched.
                 dv_n = (vx[i] - vx[j]) * nx + (vy[i] - vy[j]) * ny
 
-                # Only resolve if balls are actually approaching
+                # Only resolve if the balls are actually approaching each other
                 if dv_n > 0
                     vx[i] -= dv_n * nx
                     vy[i] -= dv_n * ny
@@ -111,21 +109,23 @@ end
 # Animation loop
 while isopen(fig.scene)
 
-    # Per-particle wall + gravity update
     for i in 1:particle_count
 
         # Floor collision
         if py[i] <= RADIUS
             if abs(vy[i]) < 2.0
+                # Particle has nearly stopped bouncing — rest it on the floor
                 py[i] = RADIUS
                 vy[i] = 0.0
                 vx[i] = vx[i] * FRICTION
             else
+                # Normal bounce: reverse and dampen vertical velocity
                 vy[i] = -vy[i] * FRICTION
                 vx[i] = vx[i] * FRICTION
                 py[i] = RADIUS + vy[i]
             end
         else
+            # Free flight: apply gravity
             vy[i] -= GRAVITY
             py[i] += vy[i]
         end
@@ -139,16 +139,16 @@ while isopen(fig.scene)
         # Side wall collisions
         if px[i] + RADIUS >= WIDTH
             vx[i] = -abs(vx[i])
-            px[i]  = WIDTH - RADIUS
+            px[i] = WIDTH - RADIUS
         elseif px[i] - RADIUS <= 0
-            vx[i] =  abs(vx[i])
-            px[i]  = RADIUS
+            vx[i] = abs(vx[i])
+            px[i] = RADIUS
         end
 
         # Horizontal bleed-off when nearly stopped
         if abs(vx[i]) < 0.5
             px[i] += sign(vx[i])
-            vx[i]  = round(vx[i] - 0.001 * sign(vx[i]), digits = 3)
+            vx[i] = round(vx[i] - 0.001 * sign(vx[i]), digits = 3)
         else
             px[i] += vx[i]
         end
@@ -158,7 +158,7 @@ while isopen(fig.scene)
     # Ball-to-ball collisions
     resolve_collisions!(px, py, vx, vy, particle_count, RADIUS)
 
-    # Push to plot
+    # Push updated positions to the plot
     pos_x[] = copy(px)
     pos_y[] = copy(py)
 
