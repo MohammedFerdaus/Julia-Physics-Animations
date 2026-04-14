@@ -70,8 +70,6 @@ Particles bounce around the screen at constant velocity with no physics beyond w
 
 Key Julia concepts: `Observable`, wall collision detection, `clamp`, GLMakie scatter updates.
 
-![particles_simple](gifs/particles_simple.gif)
-
 ---
 
 ### Particle Movement (Advanced)
@@ -122,4 +120,4 @@ Each file opens a live 640×360 GLMakie window running at 60 fps. Close the wind
 
 ## Notes
 
-All animations were written and tested in Julia 1.12.5 on Windows 10 with VS Code and the Julia extension. Written entirely from scratch with no starter code. This repository is part of a broader Julia portfolio being built toward a long-term focus on scientific machine learning and computational materials discovery.
+All animations were written and tested in Julia 1.12.5 on Windows 10 with VS Code and the Julia extension. Written entirely from scratch with no starter code.
