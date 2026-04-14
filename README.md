@@ -30,7 +30,7 @@ Two balls orbit the same circle at constant speed — red clockwise, blue counte
 
 Key Julia concepts: `Observable`, `@lift`, `cosd`/`sind`, GLMakie reactive rendering.
 
-![circular_rotations](gifs/circular_rotations.gif)
+![circular_rotations](Julia%20Basic%20Simulations/Gifs/circular_rotations.gif)
 
 ---
 
@@ -40,7 +40,7 @@ Same setup as circular rotations but the orbit is an ellipse defined by a semi-m
 
 Key Julia concepts: `Observable`, `@lift`, parametric curves, GLMakie reactive rendering.
 
-![elliptical_rotations](gifs/elliptical_rotations.gif)
+![elliptical_rotations](Julia%20Basic%20Simulations/Gifs/elliptical_rotations.gif)
 
 ---
 
@@ -50,7 +50,7 @@ A planet orbits a circle on the left half of the screen. Its vertical position t
 
 Key Julia concepts: `Observable`, `@lift`, phase offsets, vectorised broadcasting, GLMakie reactive rendering.
 
-![sine_cosine_wave](gifs/sine_cosine_wave.gif)
+![sine_cosine_wave](Julia%20Basic%20Simulations/Gifs/sine_cosine_wave.gif)
 
 ---
 
@@ -60,7 +60,7 @@ A single pendulum swings from a fixed pivot under gravity, losing energy each fr
 
 Key Julia concepts: `Observable`, `@lift`, trigonometric physics, `global` mutable state in animation loop.
 
-![pendulum_swinging](gifs/pendulum_swinging.gif)
+![pendulum_swinging](Julia%20Basic%20Simulations/Gifs/pendulum_swinging.gif)
 
 ---
 
@@ -70,7 +70,7 @@ Particles bounce around the screen at constant velocity with no physics beyond w
 
 Key Julia concepts: `Observable`, wall collision detection, `clamp`, GLMakie scatter updates.
 
-[![particles_simple](https://github.com/MohammedFerdaus/Julia-Physics-Animations/raw/main/gifs/particles_simple.gif)](/MohammedFerdaus/Julia-Physics-Animations/blob/main/gifs/particles_simple.gif)
+![particles_simple](Julia%20Basic%20Simulations/Gifs/particles_simple.gif)
 
 ---
 
@@ -80,14 +80,14 @@ Extends the simple simulation with gravity, floor friction, and elastic ball-to-
 
 Key Julia concepts: `Observable`, elastic collision physics, positional correction, `LinearAlgebra`, nested O(n²) collision loop.
 
-![particles_advance](gifs/particles_advance.gif)
+![particles_advance](Julia%20Basic%20Simulations/Gifs/particles_advance.gif)
 
 ---
 
 ## Stack
 
 | Area | Library |
-|---|---|
+| --- | --- |
 | Visualization | GLMakie.jl |
 | Linear Algebra | LinearAlgebra (stdlib) |
 | Core | Julia 1.12.5 standard library |
@@ -100,7 +100,7 @@ Key Julia concepts: `Observable`, elastic collision physics, positional correcti
 
 Install dependencies:
 
-```julia
+```
 using Pkg
 Pkg.add("GLMakie")
 ```
