@@ -1,9 +1,8 @@
-#  Rotations (Circular)
-#  Two balls orbit the same circle at the same speed
-#  Red travels clockwise, blue travels counter-clockwise
-#  A reference cross and the orbit ring are drawn for context
+# Rotations (Circular)
+# Two balls orbit the same circle at the same speed.
+# Red travels clockwise, blue travels counter-clockwise.
+# A reference crosshair and the orbit ring are drawn for context.
 
-# Add needed packages
 using GLMakie
 
 # Display window
@@ -14,9 +13,9 @@ const HEIGHT = 360
 const CX = WIDTH / 2 # orbit centre x
 const CY = HEIGHT / 2 # orbit centre y
 const R_ORBIT = 100 # orbit radius (pixels)
-const R_PLANET = 10 # ball radius  (pixels)
+const R_PLANET = 10 # ball radius (pixels)
 
-# Speed
+# Speed (degrees per frame)
 const SPEED = 2.0
 
 # Initial angles
@@ -26,15 +25,15 @@ theta_red = Observable(0) # clockwise (angle decreases)
 theta_blue = Observable(180) # counter-clockwise (angle increases)
 
 # Derived positions
-# Each Observable position is computed from the angle Observable
+# Each Observable position is computed from its angle Observable
 # so GLMakie automatically recomputes whenever the angle changes
-pos_red  = @lift Point2f(CX + cosd($theta_red) * R_ORBIT,
-                         CY + sind($theta_red) * R_ORBIT)
- 
+pos_red = @lift Point2f(CX + cosd($theta_red) * R_ORBIT,
+                        CY + sind($theta_red) * R_ORBIT)
+
 pos_blue = @lift Point2f(CX + cosd($theta_blue) * R_ORBIT,
                          CY + sind($theta_blue) * R_ORBIT)
 
-# Build the figures
+# Build the figure
 fig = Figure(size = (WIDTH, HEIGHT), backgroundcolor = :antiquewhite)
 
 ax = Axis(fig[1, 1],
@@ -49,18 +48,17 @@ ax = Axis(fig[1, 1],
     yticklabelsvisible = false,
 )
 
-# Reference lines (crosshair at centre)
+# Reference crosshair at orbit centre
 hlines!(ax, [CY], color = :black, linewidth = 1)
 vlines!(ax, [CX], color = :black, linewidth = 1)
 
-# Orbit ring
-# Draw a circle by plotting a dense set of points around it
+# Orbit ring (drawn as a dense set of points around the circle)
 orbit_angles = range(0, 360, length = 360)
 orbit_xs = CX .+ cosd.(orbit_angles) .* R_ORBIT
 orbit_ys = CY .+ sind.(orbit_angles) .* R_ORBIT
 lines!(ax, orbit_xs, orbit_ys, color = :black, linewidth = 1)
 
-# balls
+# Balls
 scatter!(ax, @lift([$pos_red]), color = :red, markersize = R_PLANET * 2)
 scatter!(ax, @lift([$pos_blue]), color = :blue, markersize = R_PLANET * 2)
 
@@ -78,7 +76,7 @@ display(fig)
 
 # Animation loop
 while isopen(fig.scene)
-    theta_red[] -= SPEED # clockwise (angle increases)
-    theta_blue[] += SPEED # counter clockwise (angle decreases)
+    theta_red[] -= SPEED # clockwise: angle decreases
+    theta_blue[] += SPEED # counter-clockwise: angle increases
     sleep(1/60)
 end
