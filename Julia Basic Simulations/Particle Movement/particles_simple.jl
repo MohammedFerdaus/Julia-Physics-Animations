@@ -1,31 +1,29 @@
-#  Particle movement — simple (No physics)
-#  Particles bounce around the screen at constant velocity.
-#  No gravity, no friction, no inter-particle interaction.
+# Particle Movement (Simple)
+# Particles bounce around the screen at constant velocity.
+# No gravity, no friction, no inter-particle interaction.
 
-# Add needed packages
 using GLMakie
 
 # Display window
 const WIDTH = 640
 const HEIGHT = 360
 
-# Particle count
-# Change particle_count to 1, 10, 100, or 1000
+# Particle count (try 1, 10, 100, 1000)
 const particle_count = 10
 
-# Particle radius
+# Particle radius (pixels)
 const RADIUS = 20
 
 # Random initial positions
 px = rand(RADIUS:5:WIDTH - RADIUS, particle_count)
 py = rand(RADIUS:5:HEIGHT - RADIUS, particle_count)
 
-# Random initial velocities
+# Random initial velocities (pixels per frame)
 speed_choices = [-5, -3, -1, 1, 3, 5]
 vx = rand(speed_choices, particle_count)
 vy = rand(speed_choices, particle_count)
 
-# Random colors
+# Random colors from palette
 palette = [:red, :green, :blue, :orange, :purple, :cyan]
 part_colors = [palette[rand(1:end)] for _ in 1:particle_count]
 
@@ -59,16 +57,17 @@ display(fig)
 while isopen(fig.scene)
     for i in 1:particle_count
 
-        # Move first
+        # Move particle
         px[i] += vx[i]
         py[i] += vy[i]
 
-        # Wall collisions
+        # Wall collision detection
         in_left = px[i] - RADIUS < 0
         in_right = px[i] + RADIUS > WIDTH
         in_bottom = py[i] - RADIUS < 0
         in_top = py[i] + RADIUS > HEIGHT
 
+        # Reflect off whichever wall(s) were hit
         if (in_left || in_right) && (in_bottom || in_top)
             vx[i] = -vx[i]
             vy[i] = -vy[i]
@@ -78,8 +77,8 @@ while isopen(fig.scene)
             vy[i] = -vy[i]
         end
 
-        # Clamp
-        px[i] = clamp(px[i], Float64(RADIUS), Float64(WIDTH  - RADIUS))
+        # Clamp position so particles can never escape the boundary
+        px[i] = clamp(px[i], Float64(RADIUS), Float64(WIDTH - RADIUS))
         py[i] = clamp(py[i], Float64(RADIUS), Float64(HEIGHT - RADIUS))
 
     end
