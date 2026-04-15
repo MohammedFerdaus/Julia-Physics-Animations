@@ -31,6 +31,7 @@ julia-physics-animations/
 An implementation of Craig Reynolds' 1987 boids algorithm. Each boid steers every frame by applying three weighted rules: separation (steer away from neighbours within a close radius), alignment (match the average heading of nearby boids), and cohesion (steer toward the average position of nearby boids). Positions wrap toroidally — boids crossing an edge reappear on the opposite side. Each boid is coloured by its current heading angle using the HSV colormap, and a short motion trail fades behind every boid. Wrap-crossing trail segments are culled to prevent full-screen artefact lines.
 
 Key Julia concepts: `Observable`, `toroidal boundary conditions`, `steering force composition`, `LinearAlgebra`, GLMakie scatter and linesegments updates.
+
 ![boids](Julia%20Basic%20Simulations/Gifs/boids.gif)
 
 ### Circular Rotations
