@@ -10,6 +10,8 @@ A collection of real-time physics animations built in Julia using GLMakie. Each 
 julia-physics-animations/
 ├── boids/
 │   └── boids_flocking.jl
+├── coral_growth/
+│   └── coral_lsystem.jl 
 ├── particle_movement/
 │   ├── particles_advance.jl
 │   └── particles_simple.jl
@@ -140,6 +142,7 @@ Run any animation:
 
 ```
 julia boids_flocking.jl
+julia coral_lsystem.jl
 julia circular_rotations.jl
 julia elliptical_rotations.jl
 julia sine_cosine_wave.jl
