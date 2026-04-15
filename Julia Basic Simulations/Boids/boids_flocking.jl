@@ -8,6 +8,7 @@
 # Trail segments that cross a wrap boundary are dropped via NaN sentinels
 # to prevent lines spanning the full screen width or height.
 
+# Add needed packages
 using GLMakie
 using LinearAlgebra
 
