@@ -34,6 +34,27 @@ Key Julia concepts: `Observable`, `toroidal boundary conditions`, `steering forc
 
 ![boids](Julia%20Basic%20Simulations/Gifs/boids.gif)
 
+---
+
+### Coral L-System Growth
+
+A Lindenmayer system (L-system) that generates and animates branching coral 
+geometry. The axiom `F` is rewritten iteratively using the rule 
+`F → FF+[+F-F-F]-[-F+F+F]` to produce a fractal branching string. A turtle 
+graphics interpreter walks the final string — `F` draws a segment, `+`/`-` 
+rotate the heading, and `[`/`]` push and pop the turtle state to form branches. 
+All geometry is precomputed once before the animation starts; the growth effect 
+is achieved by revealing segments incrementally each frame via a single 
+Observable counter. Segments are coloured by branch depth using a brown-to-cyan 
+gradient — thick trunk at the base fading to fine cyan tips.
+
+Key Julia concepts: `Observable`, `@lift`, L-system string rewriting, turtle 
+graphics state stack, precomputed geometry with incremental reveal.
+
+![coral_system](Julia%20Basic%20Simulations/Gifs/coral_lsystem.gif)
+
+---
+
 ### Circular Rotations
 
 Two balls orbit the same circle at constant speed — red clockwise, blue counter-clockwise. The balls start on opposite sides of the orbit so they are never stacked at t = 0. A reference crosshair and the orbit ring are drawn for context. Orbit radius, ball size, and speed are all adjustable via top-level constants.
